@@ -1,7 +1,7 @@
 
 from django.shortcuts import render,redirect
-from .forms import GenreForm,TrackForm
-from .models import Genre
+from .forms import GenreForm,TrackForm,ArtistForm
+from .models import Genre,Artist
 from django.http import HttpResponseRedirect,HttpResponse
 from .models import Track
 def index (request):
@@ -26,7 +26,7 @@ def deleteop(request,id_genres):
 def add_genre (request):
     if request.method =="POST":
         name_ru = request.POST.get("name_ru")
-        name_en = request.POST.get("name_en")``
+        name_en = request.POST.get("name_en")
         desc = request.POST.get("description")
         genre = Genre()
         genre.name_ru=name_ru
@@ -81,3 +81,8 @@ def add_track(request):
     else:
         trackform = TrackForm()
         return render(request, "add_track.html", {'form': trackform})
+
+
+def artists(request):
+    a=Artist.objects.all()
+    return render(request,'artists.html',{'artists':a})

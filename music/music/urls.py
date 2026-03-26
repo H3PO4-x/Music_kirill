@@ -14,4 +14,5 @@ urlpatterns = [
     path ('edit_genre/<int:id_genre>',views.edit_genre),
     path ('add_track/',views.add_track),
     path ('edit_track/<int:id_track>',views.edit_track),
+    path('artists/',views.artists),
 ]
