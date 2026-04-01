@@ -86,3 +86,14 @@ def add_track(request):
 def artists(request):
     a=Artist.objects.all()
     return render(request,'artists.html',{'artists':a})
+
+def tracks(request):
+   t = Track.objects.all()
+   a = Artist.objects.all()
+    artist = None
+   
+    if request.method == "POST":
+        id_artist = request.POST.get('artist')
+        artist = Artist.objects.get(id=id_artist)
+        t = Track.objects.filter(artist=artist)
+    return render(request, 'tracks.html', {'tracks': t, 'artists': a, 'current_artist': artist})
