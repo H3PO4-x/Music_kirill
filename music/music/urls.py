@@ -1,10 +1,9 @@
 
 from django.contrib import admin
 from django.urls import path
-from main import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
@@ -17,5 +16,8 @@ urlpatterns = [
     path ('edit_genre/<int:id_genre>',views.edit_genre),
     path ('add_track/',views.add_track),
     path ('edit_track/<int:id_track>',views.edit_track),
+     path('add_artist/', views.add_artist),
+    path('media/<int:id_artist>', views.artists),
     path('artists/',views.artists),
+     path ('deleteartist/<int:id_artist>',views.deleteartist),
 ]+static (settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

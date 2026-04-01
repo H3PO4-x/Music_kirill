@@ -13,9 +13,14 @@ def music (request):
     return render(request, 'genres.html', {'genres': genres, 'page': 'genres'})
 
 def track (request):
-    trackes = Track.objects.all()
-    genres = Genre.objects.all()
-    return render(request, 'track.html', {'trackes': trackes, 'genres': genres, 'page': 'trackes'})
+    tracks = Track.objects.all() 
+    artists = Artist.objects.all()
+    artist = None
+    if request.method == "POST":
+        id_artist = request.POST.get('artist')
+        artist = Artist.objects.get(id=id_artist)
+        tracks = Track.objects.filter(artist=artist)
+    return render(request, 'track.html', {'tracks': tracks, 'artists':artists, 'current_artist': artist, 'page': 'tracks'})
 
 def deleteop(request,id_genres):
     genres = Genre.objects.get(id=id_genres)
@@ -56,6 +61,7 @@ def deletetrack(request,id_track):
     return HttpResponse('<h1>Трек успешно удален</h1><br><a href="/">На главную</a>')
 
 
+   
     
 def edit_track (request,id_track):
     g = Track.objects.get(id=id_track)
@@ -87,13 +93,26 @@ def artists(request):
     a=Artist.objects.all()
     return render(request,'artists.html',{'artists':a})
 
-def tracks(request):
-   t = Track.objects.all()
-   a = Artist.objects.all()
-    artist = None
-   
+
+
+def deleteartist(request, id):
+    artist = Artist.objects.get(id=id_artist)
+  
+    Track.objects.filter(artist=artist).delete()
+    
+    artist.delete()
+    return redirect('artists')  
+
+def add_artist(request):
     if request.method == "POST":
-        id_artist = request.POST.get('artist')
-        artist = Artist.objects.get(id=id_artist)
-        t = Track.objects.filter(artist=artist)
-    return render(request, 'tracks.html', {'tracks': t, 'artists': a, 'current_artist': artist})
+        name = request.POST.get("name")
+        image = request.POST.get("image")
+        artist=Artist()
+        artist.name = name
+        artist.image = image
+        artist.save()
+        return redirect('/genres')
+    else:
+        artistform = ArtistForm()
+        return render(request, "add_artist.html", {'form':artistform})
+

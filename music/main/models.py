@@ -10,7 +10,6 @@ class Genre(models.Model):
 class Artist(models.Model):
     name = models.CharField(max_length=500,unique=True)
     image = models.ImageField(upload_to="artists/",null=True)
-
     def __str__(self):
         return self.name
 
@@ -18,7 +17,7 @@ class Track(models.Model):
     name = models.CharField(max_length=500)
     duretion = models.FloatField()
     genre = models.ManyToManyField(Genre)
-    artists = models.ForeignKey(Artist,on_delete=models.RESTRICT,null=True)
+    artist = models.ForeignKey('Artist', on_delete=models.CASCADE, null=True, blank=True)
     def __str__ (self):
         return self.name
 
